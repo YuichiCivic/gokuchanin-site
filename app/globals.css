@@ -1,0 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600;700;900&family=Zen+Old+Mincho:wght@400;700;900&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+.prod-card:hover {
+  transform: translateY(-5px) !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.08) !important;
+}
+
+@keyframes heroReveal {
+  from {
+    opacity: 0;
+    transform: translateY(36px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 900px) {
+  [data-dnav] {
+    display: none !important;
+  }
+  [data-ham] {
+    display: flex !important;
+  }
+  [data-agrid] {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (min-width: 901px) {
+  [data-ham] {
+    display: none !important;
+  }
+}
