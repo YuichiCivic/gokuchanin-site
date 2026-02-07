@@ -2,6 +2,32 @@
 import { useState, useEffect, useRef } from "react";
 
 /* ════════════════════════════════════════
+   IMAGES (Unsplash - Free for commercial use)
+   ════════════════════════════════════════ */
+
+const IMG = {
+  hero: "https://images.unsplash.com/photo-1556881286-fc6915169721?w=1600&q=80",         // tea field rows
+  hero2: "https://images.unsplash.com/photo-1563822249366-3efb23b8e0c9?w=1600&q=80",      // japanese tea garden
+  profile: "https://images.unsplash.com/photo-1545048702-79362596cdc9?w=800&q=80",        // tea ceremony
+  temomi: "https://images.unsplash.com/photo-1587578932405-7c740a762abd?w=1200&q=80",     // green tea leaves close
+  bihakkou: "https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?w=1200&q=80",   // tea with flowers
+  hanhakkou: "https://images.unsplash.com/photo-1558160074-4d7d8bdf4256?w=1200&q=80",     // oolong tea
+  varieties: "https://images.unsplash.com/photo-1582793988951-9aed5509eb97?w=1200&q=80",  // tea plants close up
+  brewing: "https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=1200&q=80",       // japanese teapot pouring
+  awards: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=1200&q=80",     // trophy gold
+  teaCup: "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=600&q=80",         // tea cup
+  teaPot: "https://images.unsplash.com/photo-1563822249548-9a72b6353d08?w=600&q=80",      // japanese teapot
+  teaField: "https://images.unsplash.com/photo-1595981234058-a9302fb97229?w=1200&q=80",   // tea field aerial
+  driedTea: "https://images.unsplash.com/photo-1597318181409-cf64d0b5d8a2?w=600&q=80",    // dried tea leaves
+  teaSet: "https://images.unsplash.com/photo-1571934811356-5cc061b6821f?w=600&q=80",      // tea set arrangement
+  matcha: "https://images.unsplash.com/photo-1515823064-d6e0c04616a7?w=600&q=80",         // matcha bowl
+  teaLeaf: "https://images.unsplash.com/photo-1530968033775-2c92736b131e?w=600&q=80",     // fresh tea leaf
+  // Current site images
+  oldProfile: "http://gokuchanin.com/profile2014.jpg",
+  oldTemomi: "http://gokuchanin.com/temomi-p.jpg",
+};
+
+/* ════════════════════════════════════════
    DATA
    ════════════════════════════════════════ */
 
@@ -20,10 +46,10 @@ const PAGES = [
 ];
 
 const TEA_PRODUCTS = [
-  { name: "極上手もみ茶", sub: "Gokujo Temomi-cha", desc: "一人の茶師が一日かけて作れるのは、たったの300g。日本全国で年間に数kgしか生産されない究極のお茶。", accent: "#5B7A3A", kanji: "揉", hash: "temomi" },
-  { name: "微発酵煎茶", sub: "Bihakkou Sencha", desc: "独自開発の紫外線照射芳香システム【UVT-HIRUMA】により、花香・果実香を纏わせた唯一無二のお茶。", accent: "#8B6914", kanji: "香", hash: "bihakkou" },
-  { name: "半発酵茶", sub: "Han-hakkou-cha", desc: "台湾で研修を受け習得した本格的な半発酵茶の製法。国産茶葉で作り上げる極茶人ならではの挑戦。", accent: "#A0522D", kanji: "醸", hash: "hanhakkou" },
-  { name: "彩の国 品種茶", sub: "Sainokuni Hinshu-cha", desc: "ゆめわかば、ほくめい、ふくみどり、むさしかおり。埼玉県育成品種にこだわった深むし煎茶シリーズ。", accent: "#2E6B4F", kanji: "彩", hash: "varieties" },
+  { name: "極上手もみ茶", sub: "Gokujo Temomi-cha", desc: "一人の茶師が一日かけて作れるのは、たったの300g。日本全国で年間に数kgしか生産されない究極のお茶。", accent: "#5B7A3A", kanji: "揉", hash: "temomi", img: IMG.temomi },
+  { name: "微発酵煎茶", sub: "Bihakkou Sencha", desc: "独自開発の紫外線照射芳香システム【UVT-HIRUMA】により、花香・果実香を纏わせた唯一無二のお茶。", accent: "#8B6914", kanji: "香", hash: "bihakkou", img: IMG.bihakkou },
+  { name: "半発酵茶", sub: "Han-hakkou-cha", desc: "台湾で研修を受け習得した本格的な半発酵茶の製法。国産茶葉で作り上げる極茶人ならではの挑戦。", accent: "#A0522D", kanji: "醸", hash: "hanhakkou", img: IMG.hanhakkou },
+  { name: "彩の国 品種茶", sub: "Sainokuni Hinshu-cha", desc: "ゆめわかば、ほくめい、ふくみどり、むさしかおり。埼玉県育成品種にこだわった深むし煎茶シリーズ。", accent: "#2E6B4F", kanji: "彩", hash: "varieties", img: IMG.varieties },
 ];
 
 const PRODUCT_LIST = [
@@ -147,9 +173,10 @@ function FadeIn({ children, delay = 0, style: extraStyle = {} }) {
    SUB-COMPONENTS
    ════════════════════════════════════════ */
 
-function PageHeader({ title, subtitle, kanji }) {
+function PageHeader({ title, subtitle, kanji, img }) {
   return (
-    <div style={s.pageHeader}>
+    <div style={{ ...s.pageHeader, minHeight: img ? 280 : undefined }}>
+      {img && <div style={{ position: "absolute", inset: 0, backgroundImage: `url(${img})`, backgroundSize: "cover", backgroundPosition: "center", opacity: 0.25 }} />}
       <div style={s.pageHeaderOverlay} />
       {kanji && <div style={s.pageHeaderKanji}>{kanji}</div>}
       <div style={{ position: "relative", zIndex: 1 }}>
@@ -198,6 +225,7 @@ function HomePage() {
     <>
       {/* ── HERO ── */}
       <section style={s.hero}>
+        <div style={{ ...s.heroImg, backgroundImage: `url(${IMG.hero})` }} />
         <div style={s.heroOverlay} />
         <div style={{ ...s.heroPattern, transform: `translateY(${scrollY * 0.12}px)` }} />
         <div style={s.heroContent}>
@@ -235,8 +263,9 @@ function HomePage() {
           <div style={s.aboutGrid} data-agrid="">
             <FadeIn delay={0.15}>
               <div style={s.portraitFrame}>
-                <span style={s.portraitKanji}>極</span>
-                <span style={s.portraitCaption}>比留間 嘉章</span>
+                <img src={IMG.oldProfile} alt="比留間嘉章" style={{ width: "100%", height: "100%", objectFit: "cover", position: "absolute", inset: 0 }} onError={(e) => { e.target.style.display = "none"; }} />
+                <span style={{ ...s.portraitKanji, position: "relative" }}>極</span>
+                <span style={{ ...s.portraitCaption, position: "relative" }}>比留間 嘉章</span>
                 <div style={s.portraitAccent} />
               </div>
             </FadeIn>
@@ -298,6 +327,14 @@ function HomePage() {
         </div>
       </section>
 
+      {/* ── TEA FIELD PHOTO ── */}
+      <div style={{ position: "relative", height: 300, overflow: "hidden" }}>
+        <div style={{ position: "absolute", inset: 0, backgroundImage: `url(${IMG.teaField})`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed" }} />
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, rgba(26,42,21,0.4), rgba(26,42,21,0.6))", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <p style={{ fontFamily: F.s, fontSize: "clamp(18px,3vw,28px)", color: "#fff", letterSpacing: 8, textAlign: "center", opacity: 0.9 }}>一碗のお茶に、心をこめて</p>
+        </div>
+      </div>
+
       {/* ── PRODUCTS ── */}
       <section style={s.sec}>
         <div style={s.ctr}>
@@ -308,12 +345,17 @@ function HomePage() {
                 <a href={`#${p.hash}`} style={{ textDecoration: "none", color: "inherit", display: "block" }}>
                   <div style={s.prodCard} className="prod-card">
                     <div style={{ ...s.prodAccent, backgroundColor: p.accent }} />
-                    <div style={{ ...s.prodKanji, color: p.accent }}>{p.kanji}</div>
-                    <h3 style={s.prodName}>{p.name}</h3>
-                    <p style={s.prodSub}>{p.sub}</p>
-                    <p style={s.prodDesc}>{p.desc}</p>
-                    <div style={{ ...s.prodLine, backgroundColor: p.accent }} />
-                    <span style={{ ...s.moreLink, marginTop: 12, display: "inline-block", fontSize: 12 }}>詳しく見る →</span>
+                    <div style={{ width: "100%", height: 160, overflow: "hidden", borderRadius: "4px 4px 0 0", marginBottom: 16 }}>
+                      <img src={p.img} alt={p.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                    </div>
+                    <div style={{ padding: "0 24px 28px" }}>
+                      <div style={{ ...s.prodKanji, color: p.accent }}>{p.kanji}</div>
+                      <h3 style={s.prodName}>{p.name}</h3>
+                      <p style={s.prodSub}>{p.sub}</p>
+                      <p style={s.prodDesc}>{p.desc}</p>
+                      <div style={{ ...s.prodLine, backgroundColor: p.accent }} />
+                      <span style={{ ...s.moreLink, marginTop: 12, display: "inline-block", fontSize: 12 }}>詳しく見る →</span>
+                    </div>
                   </div>
                 </a>
               </FadeIn>
@@ -380,6 +422,12 @@ function HomePage() {
         </div>
       </section>
 
+      {/* ── TEA CEREMONY PHOTO ── */}
+      <div style={{ position: "relative", height: 250, overflow: "hidden" }}>
+        <div style={{ position: "absolute", inset: 0, backgroundImage: `url(${IMG.brewing})`, backgroundSize: "cover", backgroundPosition: "center" }} />
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, rgba(26,42,21,0.3), rgba(26,42,21,0.5))" }} />
+      </div>
+
       {/* ── MEDIA BRIEF ── */}
       <section style={s.secWarm}>
         <div style={s.ctr}>
@@ -432,7 +480,7 @@ function HomePage() {
 function ProfilePage() {
   return (
     <>
-      <PageHeader title="茶人紹介" subtitle="PROFILE" kanji="極" />
+      <PageHeader title="茶人紹介" subtitle="PROFILE" kanji="極" img={IMG.profile} />
       <section style={s.sec}><div style={s.ctr}>
         <BackLink />
         <FadeIn>
@@ -483,7 +531,7 @@ function ProfilePage() {
 function TemomiPage() {
   return (
     <>
-      <PageHeader title="極上手もみ茶" subtitle="TEMOMI-CHA" kanji="揉" />
+      <PageHeader title="極上手もみ茶" subtitle="TEMOMI-CHA" kanji="揉" img={IMG.temomi} />
       <section style={s.sec}><div style={s.ctr}>
         <BackLink />
         <FadeIn>
@@ -511,6 +559,12 @@ function TemomiPage() {
           <blockquote style={{ ...s.bigQuote, fontSize: 28, color: C.green }}>
             ・・・茶心が知りたい・・・
           </blockquote>
+        </FadeIn>
+        <FadeIn delay={0.22}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, margin: "40px 0", borderRadius: 8, overflow: "hidden" }} data-agrid>
+            <img src={IMG.driedTea} alt="手もみ茶 茶葉" style={{ width: "100%", height: 200, objectFit: "cover", borderRadius: 8 }} />
+            <img src={IMG.teaLeaf} alt="茶葉 手摘み" style={{ width: "100%", height: 200, objectFit: "cover", borderRadius: 8 }} />
+          </div>
         </FadeIn>
         <SectionDivider />
         <FadeIn delay={0.25}>
@@ -541,7 +595,7 @@ function TemomiPage() {
 function BihakkouPage() {
   return (
     <>
-      <PageHeader title="微発酵煎茶" subtitle="BIHAKKOU SENCHA" kanji="香" />
+      <PageHeader title="微発酵煎茶" subtitle="BIHAKKOU SENCHA" kanji="香" img={IMG.bihakkou} />
       <section style={s.sec}><div style={s.ctr}>
         <BackLink />
         <FadeIn>
@@ -581,6 +635,11 @@ function BihakkouPage() {
             さらにパワーアップするために、日々研究を続けています。
           </p>
         </FadeIn>
+        <FadeIn delay={0.15}>
+          <div style={{ margin: "40px 0", borderRadius: 8, overflow: "hidden" }}>
+            <img src={IMG.teaField} alt="茶畑" style={{ width: "100%", height: 240, objectFit: "cover", borderRadius: 8 }} />
+          </div>
+        </FadeIn>
         <SectionDivider />
         <FadeIn delay={0.2}>
           <h4 style={s.h4}>萎凋香を活かした商品</h4>
@@ -615,7 +674,7 @@ function BihakkouPage() {
 function HanhakkouPage() {
   return (
     <>
-      <PageHeader title="半発酵茶" subtitle="HAN-HAKKOU-CHA" kanji="醸" />
+      <PageHeader title="半発酵茶" subtitle="HAN-HAKKOU-CHA" kanji="醸" img={IMG.hanhakkou} />
       <section style={s.sec}><div style={s.ctr}>
         <BackLink />
         <FadeIn>
@@ -666,7 +725,7 @@ function HanhakkouPage() {
 function VarietiesPage() {
   return (
     <>
-      <PageHeader title="栽培品種" subtitle="VARIETIES" kanji="彩" />
+      <PageHeader title="栽培品種" subtitle="VARIETIES" kanji="彩" img={IMG.varieties} />
       <section style={s.sec}><div style={s.ctr}>
         <BackLink />
         <FadeIn>
@@ -699,7 +758,7 @@ function BrewingPage() {
   const [active, setActive] = useState(0);
   return (
     <>
-      <PageHeader title="お薦めの淹れ方" subtitle="HOW TO BREW" kanji="淹" />
+      <PageHeader title="お薦めの淹れ方" subtitle="HOW TO BREW" kanji="淹" img={IMG.brewing} />
       <section style={s.sec}><div style={s.ctr}>
         <BackLink />
         <FadeIn>
@@ -749,7 +808,7 @@ function BrewingPage() {
 function AwardsPage() {
   return (
     <>
-      <PageHeader title="受賞歴" subtitle="AWARDS" kanji="賞" />
+      <PageHeader title="受賞歴" subtitle="AWARDS" kanji="賞" img={IMG.awards} />
       <section style={s.sec}><div style={s.ctr}>
         <BackLink />
         <FadeIn>
@@ -790,7 +849,7 @@ function AwardsPage() {
 function MediaPage() {
   return (
     <>
-      <PageHeader title="掲載雑誌" subtitle="MEDIA" kanji="誌" />
+      <PageHeader title="掲載雑誌" subtitle="MEDIA" kanji="誌" img={IMG.teaSet} />
       <section style={s.sec}><div style={s.ctr}>
         <BackLink />
         <FadeIn><p style={s.bodyLg}>極茶人のお茶は、数々の雑誌・新聞で紹介されています。</p></FadeIn>
@@ -824,7 +883,7 @@ function MediaPage() {
 function EssayPage() {
   return (
     <>
-      <PageHeader title="ひとりごと" subtitle="ESSAY" kanji="語" />
+      <PageHeader title="ひとりごと" subtitle="ESSAY" kanji="語" img={IMG.teaField} />
       <section style={s.sec}><div style={s.ctr}>
         <BackLink />
         <FadeIn>
@@ -864,7 +923,7 @@ function EssayPage() {
 function ContactPage() {
   return (
     <>
-      <PageHeader title="お問合せ" subtitle="CONTACT" kanji="縁" />
+      <PageHeader title="お問合せ" subtitle="CONTACT" kanji="縁" img={IMG.teaCup} />
       <section style={s.sec}><div style={s.ctr}>
         <BackLink />
         <FadeIn>
@@ -1030,6 +1089,7 @@ const s = {
 
   /* Hero */
   hero: { position: "relative", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", background: "linear-gradient(160deg,#1A2A15,#2A3A20 30%,#1E2E18 60%,#162210)" },
+  heroImg: { position: "absolute", inset: 0, backgroundSize: "cover", backgroundPosition: "center", opacity: 0.35 },
   heroOverlay: { position: "absolute", inset: 0, background: "radial-gradient(ellipse at 30% 40%,rgba(90,120,50,.18),transparent 60%),radial-gradient(ellipse at 70% 70%,rgba(60,80,40,.12),transparent 50%)" },
   heroPattern: { position: "absolute", inset: 0, opacity: .03, backgroundImage: "repeating-linear-gradient(0deg,transparent,transparent 60px,rgba(255,255,255,.5) 60px,rgba(255,255,255,.5) 61px),repeating-linear-gradient(90deg,transparent,transparent 60px,rgba(255,255,255,.5) 60px,rgba(255,255,255,.5) 61px)" },
   heroContent: { position: "relative", textAlign: "center", animation: "heroReveal 1.1s ease forwards", padding: "0 24px" },
